@@ -1,0 +1,20 @@
+2026-04-30 18:23:21,272 [INFO] [download] https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/20130606_g1k_3202_samples_ped_population.txt
+2026-04-30 18:23:24,028 [INFO]            -> families_fastq_collections\trios\20130606_g1k_3202_samples_ped_population.txt (97,483 bytes)
+2026-04-30 18:23:24,029 [INFO] [download] https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/1000G_2504_high_coverage.sequence.index
+2026-04-30 18:23:26,892 [INFO]            -> families_fastq_collections\trios\1000G_2504_high_coverage.sequence.index (982,480 bytes)
+2026-04-30 18:23:26,892 [INFO] [download] https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/1000G_698_related_high_coverage.sequence.index
+2026-04-30 18:23:29,420 [INFO]            -> families_fastq_collections\trios\1000G_698_related_high_coverage.sequence.index (294,388 bytes)
+2026-04-30 18:23:29,426 [INFO] Trios: 602
+2026-04-30 18:23:29,426 [INFO] Duos:  10
+2026-04-30 18:23:29,431 [INFO] 1000G_2504_high_coverage.sequence.index: 2504 rows, creating cram file indexes...
+2026-04-30 18:23:29,433 [INFO]   Done. Running total: 2504
+2026-04-30 18:23:29,435 [INFO] 1000G_698_related_high_coverage.sequence.index: 698 rows, creating cram file indexes...
+2026-04-30 18:23:29,436 [INFO]   Done. Running total: 3202
+2026-04-30 18:23:29,436 [INFO] Combined: 3202 unique samples (expected 3202)
+2026-04-30 18:23:29,436 [INFO] One Sample dict check: {'sample_id': 'HG00443', 'cram_url': 'https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3240184/HG00443.final.cram', 'crai_url': 'https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3240184/HG00443.final.cram.crai', 'cram_md5': '74f61c93f9cc741256a2f3453a3eb353', 'sample_population': 'CHS'}
+2026-04-30 18:23:29,437 [INFO] Enriched 602 trios with CRAM URLs
+2026-04-30 18:23:29,437 [INFO] Unique samples: 1793
+2026-04-30 18:23:29,480 [INFO] Wrote families_fastq_collections\trios\families_1000G_trios.json (892,256 bytes)
+2026-04-30 18:23:29,480 [INFO]   Trios:        602
+2026-04-30 18:23:29,480 [INFO]   Unique Samples:  1793
+2026-04-30 18:23:29,480 [INFO]   Duos skipped: 10
