@@ -1,4 +1,3 @@
 
 # check samtools version
 docker run --rm dckr_spechla:v5 conda run -n spechla_env samtools --version
-

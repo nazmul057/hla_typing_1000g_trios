@@ -1,0 +1,145 @@
+
+
+unset REF_PATH
+export REF=~/refs/GRCh38/GRCh38_full_analysis_set_plus_decoy_hla.fa
+REF_GRCH38
+
+HLA-A 1	HLA-A 2	HLA-B 1	HLA-B 2	HLA-C 1	HLA-C 2	HLA-DQB1 1	HLA-DQB1 2	HLA-DRB1 1	HLA-DRB1 2
+
+
+###################################################################################################
+V1
+
+
+SAMPLE="NA12878"
+CRAM_URL="https://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239334/NA12878.final.cram"
+THREADS=8
+
+----------------------------------------------------
+
+samtools view -H -T "$REF_GRCH38" "$CRAM_URL" \
+    | grep "^@SQ" | grep -oP "SN:\KHLA-[^\s]+" > hla_contigs.txt
+
+echo "Found $(wc -l < hla_contigs.txt) HLA decoy contigs"
+
+samtools view -H -T "$REF_GRCH38" "$CRAM_URL" \
+    | grep "^@SQ" | grep -oP "SN:\Kchr6_[^\s]+_alt" > chr6_alt_contigs.txt
+
+-----------------------------------------------------
+
+samtools view -b -@ $THREADS -T "$REF_GRCH38" \
+    "$CRAM_URL" \
+    chr6:25000000-35000000 \
+    chr6_GL000250v2_alt chr6_GL000251v2_alt chr6_GL000252v2_alt \
+    chr6_GL000253v2_alt chr6_GL000254v2_alt chr6_GL000255v2_alt \
+    chr6_GL000256v2_alt \
+    $(cat hla_contigs.txt | tr '\n' ' ') \
+    "*" \
+    > ${SAMPLE}.hla_full.bam
+
+------------------------------------------------------
+
+samtools sort -n -@ $THREADS -o ${SAMPLE}.hla_full.namesorted.bam ${SAMPLE}.hla_full.bam
+
+------------------------------------------------------
+
+samtools fastq -@ $THREADS \
+    -1 ${SAMPLE}_1.fq.gz \
+    -2 ${SAMPLE}_2.fq.gz \
+    -s ${SAMPLE}_singletons.fq.gz \
+    -0 /dev/null \
+    -n \
+    ${SAMPLE}.hla_full.namesorted.bam
+
+--------------------------------------------------------
+
+ls -lh ${SAMPLE}_1.fq.gz ${SAMPLE}_2.fq.gz ${SAMPLE}_singletons.fq.gz
+echo "Read 1: $(zcat ${SAMPLE}_1.fq.gz | wc -l | awk '{print $1/4}')"
+echo "Read 2: $(zcat ${SAMPLE}_2.fq.gz | wc -l | awk '{print $1/4}')"
+echo "Singletons: $(zcat ${SAMPLE}_singletons.fq.gz | wc -l | awk '{print $1/4}')"
+
+---------------------------------------------------------
+
+spechla \
+    -n ${SAMPLE} \
+    -1 ${SAMPLE}_1.fq.gz \
+    -2 ${SAMPLE}_2.fq.gz \
+    -p Caucasian \
+    -o ./spechla_output/ \
+    -j $THREADS
+
+-----------------------------------------------------------
+
+cat ./spechla_output/${SAMPLE}/hla.result.txt
+
+###################################################################################################
+v2
+
+-----------------------------------------------
+
+SAMPLE="HG01882"
+CRAM_URL="https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242189/HG01882.final.cram"
+THREADS=8
+
+-----------------------------------------------
+
+samtools view -H -T "$REF_GRCH38" "$CRAM_URL" \
+    | grep "^@SQ" | grep -oP "SN:\KHLA-[^\s]+" > hla_contigs.txt
+
+samtools view -H -T "$REF_GRCH38" "$CRAM_URL" \
+    | grep "^@SQ" | grep -oP "SN:\Kchr6_[^\s]+_alt" > chr6_alt_contigs.txt
+
+echo "Found $(wc -l < hla_contigs.txt) HLA decoy contigs"
+echo "Found $(wc -l < chr6_alt_contigs.txt) chr6 alt contigs"
+
+-----------------------------------------------
+
+samtools view -b -@ $THREADS -T "$REF_GRCH38" \
+    "$CRAM_URL" \
+    chr6:25000000-35000000 \
+    $(cat chr6_alt_contigs.txt | tr '\n' ' ') \
+    $(cat hla_contigs.txt | tr '\n' ' ') \
+    "*" \
+    > ${SAMPLE}.hla_full.bam
+
+-----------------------------------------------
+
+samtools sort -@ $THREADS -o ${SAMPLE}.hla_full.coordsorted.bam ${SAMPLE}.hla_full.bam
+samtools index ${SAMPLE}.hla_full.coordsorted.bam
+
+-----------------------------------------------
+
+spechla-extract-hla-reads \
+    -s ${SAMPLE} \
+    -b ${SAMPLE}.hla_full.coordsorted.bam \
+    -r hg38 \
+    -o ./hla_reads/
+
+-----------------------------------------------
+
+ls -lh ./hla_reads/
+
+-----------------------------------------------
+
+spechla \
+    -n ${SAMPLE} \
+    -1 ./hla_reads/${SAMPLE}_extract_1.fq.gz \
+    -2 ./hla_reads/${SAMPLE}_extract_2.fq.gz \
+    -p Black \
+    -o ./spechla_output/ \
+    -j $THREADS
+
+-----------------------------------------------
+
+cat ./spechla_output/${SAMPLE}/hla.result.txt
+
+
+###################################################################################################
+
+
+1: https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242189/HG01882.final.cram (HG01882)
+2: https://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239334/NA12878.final.cram (NA12878)
+3: https://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3988942/HG01888.final.cram (HG01888) (Child of HG01882)
+4: https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242190/HG01883.final.cram (HG01883) (Mother of HG01888)
+
+####################################################################################################

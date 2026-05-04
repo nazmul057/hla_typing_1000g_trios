@@ -1,0 +1,3 @@
+
+# collect_trios.py has everything to run it
+uv run families_fastq_collections\trios\collect_trios.py 
