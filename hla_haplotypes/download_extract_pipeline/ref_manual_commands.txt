@@ -3,6 +3,7 @@
 unset REF_PATH
 export REF=~/refs/GRCh38/GRCh38_full_analysis_set_plus_decoy_hla.fa
 REF_GRCH38
+export REF_GRCH38=~/refs/GRCh38/GRCh38_full_analysis_set_plus_decoy_hla.fa
 
 HLA-A 1	HLA-A 2	HLA-B 1	HLA-B 2	HLA-C 1	HLA-C 2	HLA-DQB1 1	HLA-DQB1 2	HLA-DRB1 1	HLA-DRB1 2
 

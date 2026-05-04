@@ -115,13 +115,14 @@ THREADS=8
 These lists are **constant for any CRAM aligned to the same reference**, so this step only needs to be run once per project. Save the output files and reuse for all samples.
 
 ```bash
-# Get all HLA decoy contig names
-samtools view -H -T "$REF_GRCH38" "$CRAM_URL" \
-    | grep "^@SQ" | grep -oP "SN:\KHLA-[^\s]+" > hla_contigs.txt
-
-# Get all chr6 alt contig names
-samtools view -H -T "$REF_GRCH38" "$CRAM_URL" \
-    | grep "^@SQ" | grep -oP "SN:\Kchr6_[^\s]+_alt" > chr6_alt_contigs.txt
+# Extract HLA decoy and chr6 alt contig names from the CRAM header
+samtools view -H -T "$REF_GRCH38" "$CRAM_URL" | awk -F'\t' '
+$1=="@SQ" {
+    for(i=2;i<=NF;i++) {
+        if($i~/^SN:HLA-/) { sub(/^SN:/,"",$i); print $i > "hla_contigs.txt" }
+        else if($i~/^SN:chr6_.*_alt$/) { sub(/^SN:/,"",$i); print $i > "chr6_alt_contigs.txt" }
+    }
+}'
 
 echo "Found $(wc -l < hla_contigs.txt) HLA decoy contigs"
 echo "Found $(wc -l < chr6_alt_contigs.txt) chr6 alt contigs"
@@ -133,12 +134,12 @@ Expected counts for the 1000 Genomes GRCh38 reference: ~525 HLA decoy contigs, ~
 
 ```bash
 samtools view -b -@ $THREADS -T "$REF_GRCH38" \
+    -o ${SAMPLE}.hla_full.bam \
     "$CRAM_URL" \
     chr6:25000000-35000000 \
     $(cat chr6_alt_contigs.txt | tr '\n' ' ') \
     $(cat hla_contigs.txt | tr '\n' ' ') \
-    "*" \
-    > ${SAMPLE}.hla_full.bam
+    "*"
 ```
 
 Coverage of the extraction:
@@ -399,10 +400,13 @@ The contig list extraction (Step 2) only needs to happen once per project, since
 
 ```bash
 # Run once, save outputs, reuse for all samples
-samtools view -H -T "$REF_GRCH38" "$ANY_CRAM_URL" \
-    | grep "^@SQ" | grep -oP "SN:\KHLA-[^\s]+" > hla_contigs.txt
-samtools view -H -T "$REF_GRCH38" "$ANY_CRAM_URL" \
-    | grep "^@SQ" | grep -oP "SN:\Kchr6_[^\s]+_alt" > chr6_alt_contigs.txt
+samtools view -H -T "$REF_GRCH38" "$ANY_CRAM_URL" | awk -F'\t' '
+$1=="@SQ" {
+    for(i=2;i<=NF;i++) {
+        if($i~/^SN:HLA-/) { sub(/^SN:/,"",$i); print $i > "hla_contigs.txt" }
+        else if($i~/^SN:chr6_.*_alt$/) { sub(/^SN:/,"",$i); print $i > "chr6_alt_contigs.txt" }
+    }
+}'
 ```
 
 ### Sample sheet pattern
