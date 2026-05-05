@@ -12,3 +12,10 @@ wheels/
 /keeping_tracks
 
 /ops
+
+/hla_haplotypes/full_data_pipeline/work/
+/hla_haplotypes/full_data_pipeline/reference/
+/hla_haplotypes/full_data_pipeline/input/
+/hla_haplotypes/full_data_pipeline/outputs/
+
+
