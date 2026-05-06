@@ -144,3 +144,18 @@ cat ./spechla_output/${SAMPLE}/hla.result.txt
 4: https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242190/HG01883.final.cram (HG01883) (Mother of HG01888)
 
 ####################################################################################################
+
+
+samples = [
+        ("HG01882", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242189/HG01882.final.cram", "Black"),
+        ("HG01883", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242190/HG01883.final.cram", "Black"),
+        ("HG01888", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3988942/HG01888.final.cram", "Black"),
+
+        ("NA12878", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239334/NA12878.final.cram", "Caucasian"),
+
+        ("HG00403", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241665/HG00403.final.cram", "Asian"),
+        ("HG00404", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241666/HG00404.final.cram", "Asian"),
+
+        ("HG00406", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241667/HG00406.final.cram", "Asian"),
+        ("HG00407", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241668/HG00407.final.cram", "Asian")
+    ]
