@@ -1,0 +1,278 @@
+=== spechla_type @ 2026-05-05T18:50:57+00:00 ===
+$ docker run --rm -v E:/sp_e/prfsnl/WorkBox/QU/activities/prjts/hla_haplotype/scpts/data_invstgn/hla_haplotypes/full_data_pipeline/reference:/data/reference:ro -v E:/sp_e/prfsnl/WorkBox/QU/activities/prjts/hla_haplotype/scpts/data_invstgn/hla_haplotypes/full_data_pipeline/outputs/HG00406:/data/output -w /data/output spechla_pipeline:v1 spechla -n HG00406 -1 /data/output/hla_reads/HG00406_extract_1.fq.gz -2 /data/output/hla_reads/HG00406_extract_2.fq.gz -p Asian -o /data/output/spechla_output/ -j 4
+Start profiling HLA for HG00406.
+use 4 threads.
+
+/opt/miniconda3/envs/spechla_env/share/spechla/script/whole/../phase_variants.py:985: SyntaxWarning: invalid escape sequence '\/'
+  cat $outdir/$sample.freebayes.1.vcf| sed -e 's/\//\|/g'>$outdir/$sample.freebayes.vcf
+/opt/miniconda3/envs/spechla_env/share/spechla/script/whole/../phase_variants.py:1374: SyntaxWarning: invalid escape sequence '\/'
+  cat $outdir/$sample.insertion.phased.raw.vcf| sed -e 's/1\/1/1\|1/g'>$outdir/$sample.insertion.phased.vcf
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Num of hete small variant is 0 in HLA_DPA1.
+No heterozygous locus, no need to phase.
+seg [1001, 10775, 'normal', '.']
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 244 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 244 variants
+Phasing of HLA_DPA1 is done!
+
+
+/opt/miniconda3/envs/spechla_env/share/spechla/script/whole/../phase_variants.py:985: SyntaxWarning: invalid escape sequence '\/'
+  cat $outdir/$sample.freebayes.1.vcf| sed -e 's/\//\|/g'>$outdir/$sample.freebayes.vcf
+/opt/miniconda3/envs/spechla_env/share/spechla/script/whole/../phase_variants.py:1374: SyntaxWarning: invalid escape sequence '\/'
+  cat $outdir/$sample.insertion.phased.raw.vcf| sed -e 's/1\/1/1\|1/g'>$outdir/$sample.insertion.phased.vcf
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Num of hete small variant is 19 in HLA_DPB1.
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+5 blocks after phasing.
+Start link blocks with database...
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 0 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 1 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 8 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 9 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 25 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 26 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 0 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 1 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 19 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 18 variants
+phase block with spectral graph theory
+Small variant-phasing of HLA_DPB1 is done! Haplotype ratio is 0.469:0.531
+seg [1001, 12468, 'normal', '.']
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 52 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 55 variants
+Phasing of HLA_DPB1 is done!
+
+
+/opt/miniconda3/envs/spechla_env/share/spechla/script/whole/../phase_variants.py:985: SyntaxWarning: invalid escape sequence '\/'
+  cat $outdir/$sample.freebayes.1.vcf| sed -e 's/\//\|/g'>$outdir/$sample.freebayes.vcf
+/opt/miniconda3/envs/spechla_env/share/spechla/script/whole/../phase_variants.py:1374: SyntaxWarning: invalid escape sequence '\/'
+  cat $outdir/$sample.insertion.phased.raw.vcf| sed -e 's/1\/1/1\|1/g'>$outdir/$sample.insertion.phased.vcf
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Num of hete small variant is 28 in HLA_DQA1.
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+4 blocks after phasing.
+Start link blocks with database...
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 0 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 7 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 2 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 16 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Warning: trimming variant "ACCTA" starting at HLA_DQA1:7491
+Applied 1 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Warning: trimming variant "ACCTA" starting at HLA_DQA1:7491
+Applied 4 variants
+phase block with spectral graph theory
+Small variant-phasing of HLA_DQA1 is done! Haplotype ratio is 0.484:0.516
+seg [1001, 7492, 'normal', '.']
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Warning: trimming variant "ACCTA" starting at HLA_DQA1:7491
+Applied 27 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Warning: trimming variant "ACCTA" starting at HLA_DQA1:7491
+Applied 3 variants
+Phasing of HLA_DQA1 is done!
+
+
+/opt/miniconda3/envs/spechla_env/share/spechla/script/whole/../phase_variants.py:985: SyntaxWarning: invalid escape sequence '\/'
+  cat $outdir/$sample.freebayes.1.vcf| sed -e 's/\//\|/g'>$outdir/$sample.freebayes.vcf
+/opt/miniconda3/envs/spechla_env/share/spechla/script/whole/../phase_variants.py:1374: SyntaxWarning: invalid escape sequence '\/'
+  cat $outdir/$sample.insertion.phased.raw.vcf| sed -e 's/1\/1/1\|1/g'>$outdir/$sample.insertion.phased.vcf
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Num of hete small variant is 21 in HLA_DQB1.
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+5 blocks after phasing.
+Start link blocks with database...
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Warning: trimming variant "CGTGCTG" starting at HLA_DQB1:3391
+Applied 113 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Warning: trimming variant "TGTGCTG" starting at HLA_DQB1:3391
+Applied 113 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 119 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 116 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Warning: trimming variant "AGCCAC" starting at HLA_DQB1:6321
+Applied 29 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Warning: trimming variant "AGCCAG" starting at HLA_DQB1:6321
+Applied 29 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 29 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 28 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 66 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 66 variants
+phase block with spectral graph theory
+Small variant-phasing of HLA_DQB1 is done! Haplotype ratio is 0.547:0.453
+seg [1001, 8480, 'normal', '.']
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 348 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 350 variants
+Phasing of HLA_DQB1 is done!
+
+
+/opt/miniconda3/envs/spechla_env/share/spechla/script/whole/../phase_variants.py:985: SyntaxWarning: invalid escape sequence '\/'
+  cat $outdir/$sample.freebayes.1.vcf| sed -e 's/\//\|/g'>$outdir/$sample.freebayes.vcf
+/opt/miniconda3/envs/spechla_env/share/spechla/script/whole/../phase_variants.py:1374: SyntaxWarning: invalid escape sequence '\/'
+  cat $outdir/$sample.insertion.phased.raw.vcf| sed -e 's/1\/1/1\|1/g'>$outdir/$sample.insertion.phased.vcf
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Num of hete small variant is 358 in HLA_DRB1.
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+3 blocks after phasing.
+Start link blocks with database...
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 0 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 75 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 0 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 0 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 6 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 284 variants
+phase block with spectral graph theory
+Small variant-phasing of HLA_DRB1 is done! Haplotype ratio is 0.416:0.584
+DRB1 assign dup seq 0 0 0 1
+DRB1 assign dup seq 1 0 2 1
+seg [1001, 12229, 'normal', '.']
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 359 variants
+[W::bcf_hdr_check_sanity] GQ should be declared as Type=Integer
+Applied 6 variants
+Phasing of HLA_DRB1 is done!
+
+
+start annotation...
+parameter:	sample:HG00406	dir:/data/output/spechla_output//HG00406	pop:Asian	wxs:whole	G_nom:0
+mpileup: invalid option -- 't'
+
+Usage: samtools mpileup [options] in1.bam [in2.bam [...]]
+
+Input options:
+  -6, --illumina1.3+      quality is in the Illumina-1.3+ encoding
+  -A, --count-orphans     do not discard anomalous read pairs
+  -b, --bam-list FILE     list of input BAM filenames, one per line
+  -B, --no-BAQ            disable BAQ (per-Base Alignment Quality)
+  -C, --adjust-MQ INT     adjust mapping quality; recommended:50, disable:0 [0]
+  -d, --max-depth INT     max per-file depth; avoids excessive memory usage [8000]
+  -E, --redo-BAQ          recalculate BAQ on the fly, ignore existing BQs
+  -f, --fasta-ref FILE    faidx indexed reference sequence file
+  -G, --exclude-RG FILE   exclude read groups listed in FILE
+  -l, --positions FILE    skip unlisted positions (chr pos) or regions (BED)
+  -q, --min-MQ INT        skip alignments with mapQ smaller than INT [0]
+  -Q, --min-BQ INT        skip bases with baseQ/BAQ smaller than INT [13]
+  -r, --region REG        region in which pileup is generated
+  -R, --ignore-RG         ignore RG tags (one BAM = one sample)
+  --rf, --incl-flags STR|INT
+                          required flags: only include reads with any of
+                          the mask bits set []
+  --ff, --excl-flags STR|INT
+                          filter flags: skip reads with any of the mask bits set
+                                            [UNMAP,SECONDARY,QCFAIL,DUP]
+  -x, --ignore-overlaps-removal, --disable-overlap-removal
+                          disable read-pair overlap detection and removal
+  -X, --customized-index  use customized index files
+
+Output options:
+  -o, --output FILE        write output to FILE [standard output]
+  -O, --output-BP          output base positions on reads, current orientation
+      --output-BP-5        output base positions on reads, 5' to 3' orientation
+  -M, --output-mods        output base modifications
+  -s, --output-MQ          output mapping quality
+      --output-QNAME       output read names
+      --output-extra STR   output extra read fields and read tag values
+      --output-sep CHAR    set the separator character for tag lists [,]
+      --output-empty CHAR  set the no value character for tag lists [*]
+      --no-output-ins      skip insertion sequence after +NUM
+                           Use twice for complete insertion removal
+      --no-output-ins-mods don't display base modifications within insertions
+      --no-output-del      skip deletion sequence after -NUM
+                           Use twice for complete deletion removal
+      --no-output-ends     remove ^MQUAL and $ markup in sequence column
+      --reverse-del        use '#' character for deletions on the reverse strand
+  -a                       output all positions (including zero depth)
+  -a -a (or -aa)           output absolutely all positions, including unused ref. sequences
+
+Generic options:
+      --input-fmt-option OPT[=VAL]
+               Specify a single input file format option in the form
+               of OPTION or OPTION=VALUE
+      --reference FILE
+               Reference sequence FASTA FILE [null]
+      --verbosity INT
+               Set level of verbosity
+
+See https://www.htslib.org/doc/samtools.html#GLOBAL_COMMAND_OPTIONS
+for more details.
+
+Note that using "samtools mpileup" to generate BCF or VCF files has been
+removed.  To output these formats, please use "bcftools mpileup" instead.
+No such file or directory
+/opt/miniconda3/envs/spechla_env/share/spechla/script/whole/g_group_annotation.py:68: SyntaxWarning: invalid escape sequence '\*'
+  allele = re.sub("\*","_",allele)
+Start G group resolution annotation...
+The region with low read depth is masked by N. The cutoff is specified by -k.
+The ratio of N (masked) is 0.03 for the allele /data/output/spechla_output//HG00406/hla.allele.1.HLA_A.fasta
+The ratio of N (masked) is 0.03 for the allele /data/output/spechla_output//HG00406/hla.allele.2.HLA_A.fasta
+The ratio of N (masked) is 0.13 for the allele /data/output/spechla_output//HG00406/hla.allele.1.HLA_B.fasta
+The ratio of N (masked) is 0.13 for the allele /data/output/spechla_output//HG00406/hla.allele.2.HLA_B.fasta
+The ratio of N (masked) is 0.19 for the allele /data/output/spechla_output//HG00406/hla.allele.1.HLA_C.fasta
+The ratio of N (masked) is 0.19 for the allele /data/output/spechla_output//HG00406/hla.allele.2.HLA_C.fasta
+The ratio of N (masked) is 0.02 for the allele /data/output/spechla_output//HG00406/hla.allele.1.HLA_DPA1.fasta
+The ratio of N (masked) is 0.02 for the allele /data/output/spechla_output//HG00406/hla.allele.2.HLA_DPA1.fasta
+The ratio of N (masked) is 0.0 for the allele /data/output/spechla_output//HG00406/hla.allele.1.HLA_DPB1.fasta
+The ratio of N (masked) is 0.0 for the allele /data/output/spechla_output//HG00406/hla.allele.2.HLA_DPB1.fasta
+The ratio of N (masked) is 0.09 for the allele /data/output/spechla_output//HG00406/hla.allele.1.HLA_DQA1.fasta
+The ratio of N (masked) is 0.09 for the allele /data/output/spechla_output//HG00406/hla.allele.2.HLA_DQA1.fasta
+The ratio of N (masked) is 0.11 for the allele /data/output/spechla_output//HG00406/hla.allele.1.HLA_DQB1.fasta
+The ratio of N (masked) is 0.12 for the allele /data/output/spechla_output//HG00406/hla.allele.2.HLA_DQB1.fasta
+The ratio of N (masked) is 0.11 for the allele /data/output/spechla_output//HG00406/hla.allele.1.HLA_DRB1.fasta
+The ratio of N (masked) is 0.11 for the allele /data/output/spechla_output//HG00406/hla.allele.2.HLA_DRB1.fasta
+Clean output dir.
+# version: IPD-IMGT/HLA 3.38.0
+Sample	HLA_A_1	HLA_A_2	HLA_B_1	HLA_B_2	HLA_C_1	HLA_C_2	HLA_DPA1_1	HLA_DPA1_2	HLA_DPB1_1	HLA_DPB1_2	HLA_DQA1_1	HLA_DQA1_2	HLA_DQB1_1	HLA_DQB1_2	HLA_DRB1_1	HLA_DRB1_2
+HG00406 is done.
+--- spechla_type exit 0 in 125.69s ---
+
+=== validate_hla_result ===
+
+
+samples = [
+        ("HG01882", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242189/HG01882.final.cram", "Black"),
+        ("HG01883", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242190/HG01883.final.cram", "Black"),
+        ("HG01888", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3988942/HG01888.final.cram", "Black"),
+
+        ("NA12878", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239334/NA12878.final.cram", "Caucasian"),
+
+        ("HG00403", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241665/HG00403.final.cram", "Asian"),
+        ("HG00404", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241666/HG00404.final.cram", "Asian"),
+
+        ("HG00406", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241667/HG00406.final.cram", "Asian"),
+        ("HG00407", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241668/HG00407.final.cram", "Asian")
+    ]

@@ -45,10 +45,14 @@ ENV DEBIAN_FRONTEND=noninteractive \
 # procps: ps/top for debugging long-running containers if needed.
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-        wget curl bzip2 ca-certificates \
+        wget git curl bzip2 ca-certificates \
+        gcc g++ make \
+        libgl1 libegl1 \
         bash coreutils procps \
+        less perl file vim-tiny \
         tini \
- && rm -rf /var/lib/apt/lists/*
+ && rm -rf /var/lib/apt/lists/* \
+ && ln -sf /bin/bash /bin/sh
 
 # --- Miniconda --------------------------------------------------------------
 RUN wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
