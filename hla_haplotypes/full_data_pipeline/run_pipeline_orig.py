@@ -62,22 +62,10 @@ REFERENCE_DIR_CTR    = "/data/reference"
 OUTPUT_DIR_CTR       = "/data/output"
 REFERENCE_FASTA_CTR  = f"{REFERENCE_DIR_CTR}/{REFERENCE_FASTA_NAME}"
 
-# --- Common Directories (Present in both host and container) ----------------
-HLA_READS_DIR_NAME = "hla_reads"
-SPECHLA_OUT_DIR_NAME = "spechla_output"
-
-# --- Marker files suffixes ----------------
-DONE_JSON_SUFFIX = ".done.json"
-FAILED_JSON_SUFFIX = ".failed.json"
-RUNNING_JSON_SUFFIX = ".running.json"
-
 # Contig list filenames written into INPUT_DIR_HOST. These are derived once
 # from the reference .fai and reused by every sample.
 HLA_CONTIGS_FILE = "hla_contigs.txt"
 CHR6_ALT_CONTIGS_FILE = "chr6_alt_contigs.txt"
-
-# Final output file names
-SPECHLA_G_GROUP_OUT_FILE_NAME = "hla.result.g.group.txt"
 
 # Sanity-check ranges for the GRCh38 1000 Genomes analysis-set reference.
 # Expected: ~525 HLA decoy contigs, ~16 chr6 alt contigs. Anything far outside
@@ -299,9 +287,9 @@ def process_sample(
             f"population must be one of Asian/Caucasian/Black/Unknown, got {population!r}"
         )
 
-    done_path_host = MARKERS_DIR_HOST / f"{sample_id}{DONE_JSON_SUFFIX}"
-    failed_path_host = MARKERS_DIR_HOST / f"{sample_id}{FAILED_JSON_SUFFIX}"
-    running_path_host = MARKERS_DIR_HOST / f"{sample_id}{RUNNING_JSON_SUFFIX}"
+    done_path_host = MARKERS_DIR_HOST / f"{sample_id}.done.json"
+    failed_path_host = MARKERS_DIR_HOST / f"{sample_id}.failed.json"
+    running_path_host = MARKERS_DIR_HOST / f"{sample_id}.running.json"
     sample_out_dir_host = OUTPUTS_DIR_HOST / sample_id
     log_path_host = LOGS_DIR_HOST / f"{sample_id}.log"
 
@@ -336,8 +324,8 @@ def process_sample(
     bam_unsorted_name = f"{sample_id}.hla_full.bam"
     bam_sorted_name = f"{sample_id}.hla_full.coordsorted.bam"
     bam_sorted_idx_name = f"{sample_id}.hla_full.coordsorted.bam.bai"
-    fq1_relpath = f"{HLA_READS_DIR_NAME}/{sample_id}_extract_1.fq.gz"
-    fq2_relpath = f"{HLA_READS_DIR_NAME}/{sample_id}_extract_2.fq.gz"
+    fq1_relpath = f"hla_reads/{sample_id}_extract_1.fq.gz"
+    fq2_relpath = f"hla_reads/{sample_id}_extract_2.fq.gz"
 
     started = datetime.now(timezone.utc)
     durations: dict[str, float] = {}
@@ -387,7 +375,7 @@ def process_sample(
                  "-s", sample_id,
                  "-b", f"{OUTPUT_DIR_CTR}/{bam_sorted_name}",
                  "-r", "hg38",
-                 "-o", f"{OUTPUT_DIR_CTR}/{HLA_READS_DIR_NAME}/"],
+                 "-o", f"{OUTPUT_DIR_CTR}/hla_reads/"],
             )
 
             # Step 5: sanity-check the FASTQs are non-empty before paying for
@@ -402,7 +390,7 @@ def process_sample(
                  "-1", f"{OUTPUT_DIR_CTR}/{fq1_relpath}",
                  "-2", f"{OUTPUT_DIR_CTR}/{fq2_relpath}",
                  "-p", population,
-                 "-o", f"{OUTPUT_DIR_CTR}/{SPECHLA_OUT_DIR_NAME}/",
+                 "-o", f"{OUTPUT_DIR_CTR}/spechla_output/",
                  "-j", str(THREADS_PER_SAMPLE)],
             )
 
@@ -532,7 +520,7 @@ def _sanity_check_fastqs(sample_id: str, sample_out_dir_host: Path, log) -> None
     Empty FASTQs from a botched slice would silently produce garbage HLA
     types; failing here is much cheaper than running SpecHLA on nothing.
     """
-    hla_reads_dir_host = sample_out_dir_host / HLA_READS_DIR_NAME
+    hla_reads_dir_host = sample_out_dir_host / "hla_reads"
     fq1_path_host = hla_reads_dir_host / f"{sample_id}_extract_1.fq.gz"
     fq2_path_host = hla_reads_dir_host / f"{sample_id}_extract_2.fq.gz"
     log.write(f"\n=== sanity_check_fastqs ===\n")
@@ -562,7 +550,7 @@ def _validate_hla_result(sample_id: str, sample_out_dir_host: Path, log) -> None
     dash. A few dashes are normal (some genes may have insufficient coverage
     in a given sample); all-dashes is the unambiguous failure signal.
     """
-    result_path_host = sample_out_dir_host / SPECHLA_OUT_DIR_NAME / sample_id / SPECHLA_G_GROUP_OUT_FILE_NAME
+    result_path_host = sample_out_dir_host / "spechla_output" / sample_id / "hla.result.g.group.txt"
     log.write(f"\n=== validate_hla_result ===\n")
     if not result_path_host.exists():
         raise RuntimeError(
@@ -633,9 +621,9 @@ def run_pipeline(
     retried_count = 0
 
     for sample_id, cram_url, population in samples:
-        done_path_host = MARKERS_DIR_HOST / f"{sample_id}{DONE_JSON_SUFFIX}"
-        failed_path_host = MARKERS_DIR_HOST / f"{sample_id}{FAILED_JSON_SUFFIX}"
-        running_path_host = MARKERS_DIR_HOST / f"{sample_id}{RUNNING_JSON_SUFFIX}"
+        done_path_host = MARKERS_DIR_HOST / f"{sample_id}.done.json"
+        failed_path_host = MARKERS_DIR_HOST / f"{sample_id}.failed.json"
+        running_path_host = MARKERS_DIR_HOST / f"{sample_id}.running.json"
 
         if done_path_host.exists():
             already_done.append(sample_id)
@@ -766,5 +754,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-

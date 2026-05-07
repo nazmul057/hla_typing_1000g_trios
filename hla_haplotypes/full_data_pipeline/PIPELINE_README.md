@@ -546,4 +546,3 @@ results derived from this pipeline.
 
 The 1000 Genomes Project high-coverage cohort used here is described in
 Byrska-Bishop et al., Cell 2022.
-
