@@ -145,7 +145,6 @@ cat ./spechla_output/${SAMPLE}/hla.result.txt
 
 ####################################################################################################
 
-
 samples = [
         ("HG01882", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242189/HG01882.final.cram", "Black"),
         ("HG01883", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242190/HG01883.final.cram", "Black"),
