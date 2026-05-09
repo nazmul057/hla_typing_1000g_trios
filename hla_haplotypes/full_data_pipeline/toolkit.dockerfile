@@ -7,18 +7,24 @@
 #    docker run --rm spechla_pipeline:v1 samtools --version | head -3
 #    docker run --rm spechla_pipeline:v1 spechla -h 2>&1 | head -5
 #    docker run --rm spechla_pipeline:v1 which spechla-extract-hla-reads
+
+#    docker run --rm spechla_pipeline:v1 bash -c "conda run -n spechla_env conda list spechla | grep -E '^spechla\s+1\.0\.10\b' || (echo 'SpecHLA version mismatch' && exit 1)"
+#    docker run --rm spechla_pipeline:v1 bash -c "samtools --version | head -3 && samtools --version | grep -qi 'libcurl' || (echo 'samtools missing libcurl support' && exit 1)"
+#    docker run --rm spechla_pipeline:v1 bash -c "which spechla && which spechla-extract-hla-reads && test -d \"\${CONDA_PREFIX}/share/spechla/db\" && test -d \"\${CONDA_PREFIX}/share/spechla/script\""
 #
 #    Windows:
 #    docker run --rm spechla_pipeline:v1 bash -c "samtools --version | head -3"
 #    docker run --rm spechla_pipeline:v1 bash -c "spechla -h 2>&1 | head -5"
 #    docker run --rm spechla_pipeline:v1 which spechla-extract-hla-reads
 
-#    :: Verification 1: SpecHLA is the pinned version.
+#    Verification 1: SpecHLA is the pinned version.
 #    docker run --rm spechla_pipeline:v1 bash -c "conda run -n spechla_env conda list spechla | grep -E '^spechla\s+1\.0\.10\b' || (echo 'SpecHLA version mismatch' && exit 1)"
-#    :: Verification 2: samtools came in and supports HTTPS (libcurl).
-#     docker run --rm spechla_pipeline:v1 bash -c "samtools --version | head -3 && samtools --version | grep -qi 'libcurl' || (echo 'samtools missing libcurl support' && exit 1)"
-#     :: Verification 3: SpecHLA entrypoints + database/scripts directories.
-#     docker run --rm spechla_pipeline:v1 bash -c "which spechla && which spechla-extract-hla-reads && test -d \"\${CONDA_PREFIX}/share/spechla/db\" && test -d \"\${CONDA_PREFIX}/share/spechla/script\""
+#    
+#    Verification 2: samtools came in and supports HTTPS (libcurl).
+#    docker run --rm spechla_pipeline:v1 bash -c "samtools --version | head -3 && samtools --version | grep -qi 'libcurl' || (echo 'samtools missing libcurl support' && exit 1)"
+#    
+#    Verification 3: SpecHLA entrypoints + database/scripts directories.
+#    docker run --rm spechla_pipeline:v1 bash -c "which spechla && which spechla-extract-hla-reads && test -d \"\${CONDA_PREFIX}/share/spechla/db\" && test -d \"\${CONDA_PREFIX}/share/spechla/script\""
 
 #
 # Usage (per-sample, from driver):

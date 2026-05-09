@@ -158,3 +158,18 @@ samples = [
         ("HG00406", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241667/HG00406.final.cram", "Asian"),
         ("HG00407", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241668/HG00407.final.cram", "Asian")
     ]
+
+######################################################################################################
+
+tmux ls
+
+tmux new -s hla_p_r
+
+ctrl + B, D
+
+tmux attach -t hla_p_r
+
+tmux kill-session -t hla_p_r
+
+nproc
+

@@ -1,0 +1,66 @@
+main_samview] region "HLA-C*15:17" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-C*15:96Q" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-C*16:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-C*16:02:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-C*16:04:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-C*17:01:01:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-C*17:01:01:03" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-C*17:03" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-C*18:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*01:01:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*01:02:01:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*01:02:01:03" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*01:02:01:04" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*01:03:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*01:11" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*02:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*04:01:02:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*04:01:02:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*04:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*05:01:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*05:01:01:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*05:03" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*05:05:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*05:05:01:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*05:11" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQA1*06:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQB1*03:01:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQB1*03:01:01:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DQB1*03:01:01:03" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*01:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*01:02:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*03:01:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*03:01:01:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*04:03:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*07:01:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*07:01:01:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*08:03:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*09:21" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*10:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*11:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*11:01:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*11:04:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*12:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*12:17" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*13:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*13:02:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*14:05:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*14:54:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*15:01:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*15:01:01:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*15:01:01:04" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*15:02:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*15:03:01:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*15:03:01:02" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "HLA-DRB1*16:02:01" specifies an invalid region or unknown reference. Continue anyway.
+[main_samview] region "*" specifies an invalid region or unknown reference. Continue anyway.
+[W::hts_close] EOF marker is absent. The input is probably truncated
+samtools view: error closing "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241665/HG00403.final.cram": -1
+--- slice exit 1 in 185.91s ---
+
+##################################################################################
+
+[E::cram_index_load] Could not retrieve index file for 'https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242189/HG01882.final.cram'
+samtools view: Random alignment retrieval only works for indexed SAM.gz, BAM or CRAM files.
+--- slice exit 1 in 3.99s ---
+

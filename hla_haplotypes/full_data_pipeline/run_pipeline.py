@@ -27,7 +27,7 @@ from pathlib import Path
 # they are resolved to absolute form before being passed to Docker.
 ROOT_DIR_HOST = Path("hla_haplotypes/full_data_pipeline").resolve()
 
-DOCKER_IMAGE = "spechla_pipeline:v1"
+DOCKER_IMAGE = "adramlan/spechla_pipeline:v1"
 
 REFERENCE_FASTA_NAME = "GRCh38_full_analysis_set_plus_decoy_hla.fa"
 REFERENCE_FASTA_URL = (
