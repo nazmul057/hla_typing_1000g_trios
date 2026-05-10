@@ -1,0 +1,19 @@
+
+# check samtools version
+docker run --rm dckr_spechla:v5 conda run -n spechla_env samtools --version
+
+# docker push
+docker tag spechla_pipeline:v1 adramlan/spechla_pipeline:v1
+docker login
+docker push adramlan/spechla_pipeline:v1
+
+# tmux commands
+tmux ls
+tmux new -s hla_p_r
+ctrl + B, D
+tmux attach -t hla_p_r
+tmux kill-session -t hla_p_r
+
+# cpu core check (debian)
+nproc
+

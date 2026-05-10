@@ -1,0 +1,22 @@
+2026-05-10 19:33:10,187 [INFO] [download] https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/20130606_g1k_3202_samples_ped_population.txt
+2026-05-10 19:33:12,816 [INFO]            -> families\trios\20130606_g1k_3202_samples_ped_population.txt (97,483 bytes)
+2026-05-10 19:33:12,816 [INFO] [download] https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/1000G_2504_high_coverage.sequence.index
+2026-05-10 19:33:15,672 [INFO]            -> families\trios\1000G_2504_high_coverage.sequence.index (982,480 bytes)
+2026-05-10 19:33:15,672 [INFO] [download] https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/1000G_698_related_high_coverage.sequence.index
+2026-05-10 19:33:17,982 [INFO]            -> families\trios\1000G_698_related_high_coverage.sequence.index (294,388 bytes)
+2026-05-10 19:33:17,987 [INFO] Trios: 602
+2026-05-10 19:33:17,988 [INFO] Duos:  10
+2026-05-10 19:33:17,992 [INFO] 1000G_2504_high_coverage.sequence.index: 2504 rows, creating cram file indexes...
+2026-05-10 21:04:07,086 [INFO]   Done. Running total: 2504
+2026-05-10 21:04:07,088 [INFO] 1000G_698_related_high_coverage.sequence.index: 698 rows, creating cram file indexes...
+2026-05-10 21:32:40,099 [INFO]   Done. Running total: 3202
+2026-05-10 21:32:40,100 [INFO] Combined: 3202 unique samples (expected 3202)
+2026-05-10 21:32:40,100 [INFO] One Sample dict check: {'sample_id': 'HG00443', 'cram_url': 'https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3240184/HG00443.final.cram', 'cram_aws_url': 'https://1000genomes.s3.us-east-1.amazonaws.com/1000G_2504_high_coverage/data/ERR3240184/HG00443.final.cram', 'cram_size': 16714788969, 'crai_size': 1476489, 'cram_md5': '74f61c93f9cc741256a2f3453a3eb353', 'sample_population': 'CHS', 'sample_spechla_population': 'Asian'}
+2026-05-10 21:32:40,102 [INFO] Enriched 602 trios with CRAM URLs
+2026-05-10 21:32:40,102 [INFO] Unique samples: 1793
+2026-05-10 21:32:40,166 [INFO] Wrote families\trios\samples_2504.tsv (2504 samples)
+2026-05-10 21:32:40,170 [INFO] Wrote families\trios\samples_698.tsv (698 samples)
+2026-05-10 21:32:40,170 [INFO] Wrote families\trios\families_1000G_trios.json (1,108,833 bytes)
+2026-05-10 21:32:40,170 [INFO]   Trios:        602
+2026-05-10 21:32:40,170 [INFO]   Unique Samples:  1793
+2026-05-10 21:32:40,170 [INFO]   Duos skipped: 10

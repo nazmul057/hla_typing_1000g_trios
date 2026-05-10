@@ -3,7 +3,7 @@
 Streams HLA-relevant reads from remote CRAMs and runs SpecHLA inside a pinned
 Docker image. Designed to be run from a single command:
 
-    python run_pipeline.py
+    python run_pipeline.py samples.tsv
 
 On startup, the pipeline verifies its setup (working directories, reference
 genome, contig lists). If anything is missing, setup is performed before
@@ -12,7 +12,9 @@ sample processing begins.
 
 from __future__ import annotations
 
+import argparse
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -21,19 +23,35 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 
-# --- Configuration ----------------------------------------------------------
-# Edit ROOT_DIR_HOST to point at your pipeline working directory. Everything
-# the pipeline reads or writes lives under this path. Relative paths are fine;
-# they are resolved to absolute form before being passed to Docker.
-ROOT_DIR_HOST = Path("hla_haplotypes/full_data_pipeline").resolve()
+import boto3
+from botocore import UNSIGNED
+from botocore.config import Config
+from dotenv import load_dotenv
 
-DOCKER_IMAGE = "adramlan/spechla_pipeline:v1"
+def _load_config() -> None:
+    """Load .env and verify required environment variables are set.
+    Called at import time so module-level constants below can read them.
+    """
+    load_dotenv()
+    required = ["HLA_TOOLKIT_IMAGE_NAME", "HLA_TOOLKIT_IMAGE_TAG", "ROOT_DIR_FULL_PIPELINE"]
+    missing = [k for k in required if not os.environ.get(k)]
+    if missing:
+        print(f"ERROR: missing in .env: {', '.join(missing)}; "
+              f"set them and run from root.", file=sys.stderr)
+        sys.exit(1)
+
+_load_config()
+
+# --- Configuration ----------------------------------------------------------
+# ROOT_DIR_HOST is the pipeline working directory; everything the pipeline
+# reads or writes lives under this path. Set ROOT_DIR_FULL_PIPELINE in .env
+# (relative paths are fine; they are resolved to absolute form here).
+ROOT_DIR_HOST = Path(os.environ["ROOT_DIR_FULL_PIPELINE"]).resolve()
+DOCKER_IMAGE = f"{os.environ['HLA_TOOLKIT_IMAGE_NAME']}:{os.environ['HLA_TOOLKIT_IMAGE_TAG']}"
 
 REFERENCE_FASTA_NAME = "GRCh38_full_analysis_set_plus_decoy_hla.fa"
-REFERENCE_FASTA_URL = (
-    "http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/"
-    "GRCh38_reference_genome/" + REFERENCE_FASTA_NAME
-)
+REFERENCE_S3_BUCKET = "1000genomes"
+REFERENCE_S3_KEY_PREFIX = "technical/reference/GRCh38_reference_genome"
 
 # --- Directory layout (host-side) -------------------------------------------
 # All subdirectories the pipeline reads or writes on the host machine. The
@@ -137,12 +155,12 @@ def _create_subdirs() -> None:
 
 
 def _ensure_reference() -> None:
-    """Download and index the reference FASTA if either is absent.
+    """Download the reference FASTA and its index from the 1000 Genomes S3
+    bucket if either is absent.
 
-    Both download and indexing run inside the Docker image, so the host needs
-    nothing beyond Docker and Python. The reference directory is mounted rw
-    during setup; at pipeline runtime it is mounted ro by the per-sample
-    workers.
+    The 1000 Genomes public bucket ships a prebuilt .fai alongside the FASTA,
+    so we download both directly and skip the `samtools faidx` step entirely.
+    Anonymous (UNSIGNED) S3 access is used; no AWS credentials required.
     """
     fasta_path_host = REFERENCE_DIR_HOST / REFERENCE_FASTA_NAME
     fai_path_host = REFERENCE_DIR_HOST / (REFERENCE_FASTA_NAME + ".fai")
@@ -151,29 +169,28 @@ def _ensure_reference() -> None:
         print(f"[setup] Reference already present: {fasta_path_host.name} (+ .fai)")
         return
 
-    mount = f"{REFERENCE_DIR_HOST.as_posix()}:{REFERENCE_DIR_CTR}"
+    s3 = boto3.client(
+        "s3",
+        region_name="us-east-1",
+        config=Config(signature_version=UNSIGNED),
+    )
 
-    if not fasta_path_host.exists():
-        print(f"[setup] Downloading reference FASTA (~3 GB) to {fasta_path_host}")
-        # `wget -c` resumes a partial download instead of restarting from zero
-        # if a previous attempt was interrupted.
-        download_cmd = [
-            "docker", "run", "--rm",
-            "-v", mount,
-            "-w", REFERENCE_DIR_CTR,
-            DOCKER_IMAGE,
-            "wget", "-c", REFERENCE_FASTA_URL,
-        ]
-        _run_or_die(download_cmd, "reference download failed")
-
-    print(f"[setup] Building FASTA index: {fai_path_host.name}")
-    faidx_cmd = [
-        "docker", "run", "--rm",
-        "-v", mount,
-        DOCKER_IMAGE,
-        "samtools", "faidx", REFERENCE_FASTA_CTR,
+    targets = [
+        (REFERENCE_FASTA_NAME, fasta_path_host),
+        (REFERENCE_FASTA_NAME + ".fai", fai_path_host),
     ]
-    _run_or_die(faidx_cmd, "samtools faidx failed")
+    for name, out_path_host in targets:
+        if out_path_host.exists() and out_path_host.stat().st_size > 0:
+            print(f"[setup] Skipping (exists): {out_path_host.name}")
+            continue
+        key = f"{REFERENCE_S3_KEY_PREFIX}/{name}"
+        print(f"[setup] Downloading s3://{REFERENCE_S3_BUCKET}/{key} -> {out_path_host}")
+        try:
+            s3.download_file(REFERENCE_S3_BUCKET, key, str(out_path_host))
+        except Exception as exc:
+            print(f"[setup] ERROR: failed to download {key}: {exc}", file=sys.stderr)
+            sys.exit(1)
+        print(f"[setup]   -> {out_path_host.name} ({out_path_host.stat().st_size:,} bytes)")
 
 
 def _ensure_contig_lists() -> None:
@@ -243,21 +260,29 @@ def _read_contig_list(path: Path) -> list[str]:
     return [line.strip() for line in path.read_text().splitlines() if line.strip()]
 
 
-def _run_or_die(cmd: list[str], error_message: str) -> None:
-    """Run a subprocess, streaming output to the console; exit on failure.
+def _load_samples_tsv(tsv_path: Path) -> list[tuple[str, str, str]]:
+    """Read a 3-column TSV of (sample_id, cram_url, population) rows.
 
-    Used during setup, where failures are fatal to the whole pipeline run.
-    Per-sample failures use _run_step instead, which logs and raises.
+    Blank lines and lines beginning with '#' are skipped. Every field is
+    stripped of surrounding whitespace. Raises ValueError on a malformed row
+    so a typo in the input file fails loudly instead of silently dropping a
+    sample.
     """
-    try:
-        subprocess.run(cmd, check=True)
-    except subprocess.CalledProcessError as exc:
-        print(f"[setup] ERROR: {error_message} (exit {exc.returncode})", file=sys.stderr)
-        sys.exit(1)
-    except FileNotFoundError:
-        print(f"[setup] ERROR: command not found: {cmd[0]}", file=sys.stderr)
-        print("[setup] Is Docker installed and on PATH?", file=sys.stderr)
-        sys.exit(1)
+    samples: list[tuple[str, str, str]] = []
+    with tsv_path.open() as f:
+        for raw in f:
+            line = raw.strip()
+            if not line or line.startswith("#"):
+                continue
+            fields = [c.strip() for c in line.split("\t")]
+            if len(fields) != 3:
+                raise ValueError(
+                    f"{tsv_path}: expected 3 tab-separated columns for "
+                    f"sample {fields[0]!r}, got {len(fields)}"
+                )
+            sample_id, cram_url, population = fields
+            samples.append((sample_id, cram_url, population))
+    return samples
 
 
 # --- Per-sample processing --------------------------------------------------
@@ -273,10 +298,13 @@ def process_sample(
     The contig lists are loaded once at startup and passed in by the caller;
     they do not change between samples in a single pipeline run.
 
-    The eight steps (slice, sort, index, extract, sanity-check, type, rename
-    placeholder, cleanup) each run in their own short-lived container. Every
-    container's stdout+stderr is appended to work/logs/<sample_id>.log along
-    with timestamps; high-level progress lines are echoed to the console.
+    The eight steps (slice, sort, index, extract, sanity-check, type,
+    validate, cleanup) run mostly in their own short-lived containers; 
+    sanity-check and validate are host-side Python.
+    Container stdout+stderr is appended to work/logs/<sample_id>.log along
+    with timestamps; the sanity-check and validate steps are host-side
+    Python and write their findings to the same log. High-level progress
+    lines are echoed to the console.
 
     Concurrency-safe via three marker files in work/markers/:
         <sample_id>.running.json  — created exclusively before processing
@@ -607,6 +635,7 @@ def run_pipeline(
     chr6_alt_contigs: list[str],
     hla_contigs: list[str],
     max_workers: int = 4,
+    cli_args: argparse.Namespace | None = None,
 ) -> None:
     """Process a list of samples in parallel via a thread pool.
 
@@ -700,6 +729,7 @@ def run_pipeline(
         fresh=fresh_count,
         succeeded=succeeded,
         failed=failed,
+        cli_args=cli_args
     )
 
 
@@ -713,6 +743,7 @@ def _append_driver_log(
     fresh: int,
     succeeded: list[str],
     failed: list[tuple[str, str]],
+    cli_args=None,
 ) -> None:
     """Append a summary block for this run to work/logs/_driver.log."""
     driver_log_host = LOGS_DIR_HOST / "_driver.log"
@@ -723,6 +754,11 @@ def _append_driver_log(
         f.write(f"Finished:    {finished.isoformat(timespec='seconds')}\n")
         f.write(f"Duration:    {duration}s\n")
         f.write(f"Max workers: {max_workers}\n")
+        if cli_args is not None:
+            f.write(f"Invocation:  {' '.join(sys.argv)}\n")
+            f.write("CLI args:\n")
+            for key, value in sorted(vars(cli_args).items()):
+                f.write(f"  {key} = {value}\n")
         f.write("\n")
         f.write(f"Input total: {input_total}\n")
         f.write(f"Already done (skipped): {already_done}\n")
@@ -739,29 +775,36 @@ def _append_driver_log(
 
 # --- Entry point ------------------------------------------------------------
 def main() -> None:
+
+    parser = argparse.ArgumentParser(
+         description="Run the HLA typing pipeline on a TSV of samples.",
+         epilog="Examples:\n"
+                "  python run_pipeline.py samples.tsv --start 0 --end 50 --max-workers 4\n"
+                "  python run_pipeline.py samples.tsv --start 50  # 50 through end\n"
+                "  python run_pipeline.py samples.tsv             # all samples",
+         formatter_class=argparse.RawDescriptionHelpFormatter,
+     )
+    parser.add_argument("tsv", type=Path, help="Path to the samples TSV (sample_id\\tcram_url\\tpopulation).")
+    parser.add_argument("--start", type=int, default=0, help="Start index (inclusive) into the sample list.")
+    parser.add_argument("--end", type=int, default=None, help="End index (exclusive) into the sample list. Defaults to end of file.")
+    parser.add_argument("--max-workers", type=int, default=4, help="Max parallel samples.")
+    args = parser.parse_args()
+
     setup()
 
-    # Contig lists are constant for the whole run; load once after setup
-    # has guaranteed the files exist, then pass to every process_sample call.
     chr6_alt_contigs = _read_contig_list(INPUT_DIR_HOST / CHR6_ALT_CONTIGS_FILE)
     hla_contigs = _read_contig_list(INPUT_DIR_HOST / HLA_CONTIGS_FILE)
 
-    # Smoke test list. Replace with the JSON-driven loop once the loader
-    # is built.
-    samples = [
-        ("HG01882", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242189/HG01882.final.cram", "Black"),
-        ("HG01883", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242190/HG01883.final.cram", "Black"),
-        ("HG01888", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3988942/HG01888.final.cram", "Black"),
+    all_samples = _load_samples_tsv(args.tsv)
+    samples = all_samples[args.start:args.end]
+    print(f"[main] Loaded {len(all_samples)} samples from {args.tsv}; "
+          f"processing slice [{args.start}:{args.end}] -> {len(samples)} samples")
 
-        ("NA12878", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239334/NA12878.final.cram", "Caucasian"),
-
-        ("HG00403", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241665/HG00403.final.cram", "Asian"),
-        ("HG00404", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241666/HG00404.final.cram", "Asian"),
-
-        ("HG00406", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241667/HG00406.final.cram", "Asian"),
-        ("HG00407", "https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241668/HG00407.final.cram", "Asian")
-    ]
-    run_pipeline(samples, chr6_alt_contigs, hla_contigs, max_workers=4)
+    run_pipeline(
+        samples, chr6_alt_contigs, hla_contigs,
+        max_workers=args.max_workers,
+        cli_args=args
+    )
 
 
 if __name__ == "__main__":

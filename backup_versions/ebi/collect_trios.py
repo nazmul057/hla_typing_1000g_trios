@@ -6,7 +6,7 @@ import urllib.error
 import json
 import logging
 
-DATA_DIR = Path("families_fastq_collections/trios")
+DATA_DIR = Path("families/trios")
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 logging.basicConfig(

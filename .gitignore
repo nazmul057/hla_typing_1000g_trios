@@ -13,10 +13,10 @@ wheels/
 
 /ops
 
-/hla_haplotypes/full_data_pipeline/work/
-/hla_haplotypes/full_data_pipeline/reference/
-/hla_haplotypes/full_data_pipeline/input/
-/hla_haplotypes/full_data_pipeline/outputs/
+/hla_typing/full_data_pipeline/work/
+/hla_typing/full_data_pipeline/reference/
+/hla_typing/full_data_pipeline/input/
+/hla_typing/full_data_pipeline/outputs/
 
 
 /docker_image_pr

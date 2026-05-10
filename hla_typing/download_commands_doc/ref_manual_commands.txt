@@ -161,15 +161,4 @@ samples = [
 
 ######################################################################################################
 
-tmux ls
-
-tmux new -s hla_p_r
-
-ctrl + B, D
-
-tmux attach -t hla_p_r
-
-tmux kill-session -t hla_p_r
-
-nproc
 
