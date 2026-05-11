@@ -311,17 +311,17 @@ def main_run():
         "family_trios": trios,
     }
 
-    out_path = DATA_DIR / "families_1000G_trios.json"
+    out_path = DATA_DIR / "family_trios_1kG.json"
     with open(out_path, "w") as f:
         json.dump(output, f, indent=2)
     
-    samples_2504_path = DATA_DIR / "samples_2504.tsv"
+    samples_2504_path = DATA_DIR / "samples_2504_1kG.tsv"
     with open(samples_2504_path, "w") as f:
         for sid, url, pop in samples_2504:
             f.write(f"{sid}\t{url}\t{pop}\n")
     log.info(f"Wrote {samples_2504_path} ({len(samples_2504)} samples)")
 
-    samples_698_path = DATA_DIR / "samples_698.tsv"
+    samples_698_path = DATA_DIR / "samples_698_1kG.tsv"
     with open(samples_698_path, "w") as f:
         for sid, url, pop in samples_698:
             f.write(f"{sid}\t{url}\t{pop}\n")

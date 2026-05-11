@@ -1,6 +1,19 @@
 
 # check samtools version
 docker run --rm dckr_spechla:v5 conda run -n spechla_env samtools --version
+docker inspect debian:bookworm
+docker build --no-cache -f toolkit.dockerfile -t hla_toolkit:v1 .
+docker run --rm hla_toolkit:v1 bash -c "conda run -n spechla_env conda env export --no-builds" > spechla_env.yml
+docker image prune
+
+docker tag hla_toolkit:v1 yourusername/hla_toolkit:v1
+docker push yourusername/hla_toolkit:v1
+
+digest: 
+v1: digest: sha256:082e0868277efab79d77bf66a2f8fe5c08d842064f16b92a7e74cfdaf66964e3 size: 856
+
+# inspect 
+docker inspect --format="{{index .RepoDigests 0}}" debian:bookworm
 
 # docker push
 docker tag spechla_pipeline:v1 adramlan/spechla_pipeline:v1
