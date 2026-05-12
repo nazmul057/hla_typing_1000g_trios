@@ -1,22 +1,23 @@
-2026-05-11 11:28:27,903 [INFO] [download] https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/20130606_g1k_3202_samples_ped_population.txt
-2026-05-11 11:28:30,407 [INFO]            -> families\trios\20130606_g1k_3202_samples_ped_population.txt (97,483 bytes)
-2026-05-11 11:28:30,407 [INFO] [download] https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/1000G_2504_high_coverage.sequence.index
-2026-05-11 11:28:33,263 [INFO]            -> families\trios\1000G_2504_high_coverage.sequence.index (982,480 bytes)
-2026-05-11 11:28:33,263 [INFO] [download] https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/1000G_698_related_high_coverage.sequence.index
-2026-05-11 11:28:35,698 [INFO]            -> families\trios\1000G_698_related_high_coverage.sequence.index (294,388 bytes)
-2026-05-11 11:28:35,703 [INFO] Trios: 602
-2026-05-11 11:28:35,703 [INFO] Duos:  10
-2026-05-11 11:28:35,708 [INFO] 1000G_2504_high_coverage.sequence.index: 2504 rows, creating cram file indexes...
-2026-05-11 12:59:05,036 [INFO]   Done. Running total: 2504
-2026-05-11 12:59:05,040 [INFO] 1000G_698_related_high_coverage.sequence.index: 698 rows, creating cram file indexes...
-2026-05-11 13:24:33,311 [INFO]   Done. Running total: 3202
-2026-05-11 13:24:33,311 [INFO] Combined: 3202 unique samples (expected 3202)
-2026-05-11 13:24:33,312 [INFO] One Sample dict check: {'sample_id': 'HG00443', 'cram_url': 'https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3240184/HG00443.final.cram', 'cram_aws_url': 'https://1000genomes.s3.us-east-1.amazonaws.com/1000G_2504_high_coverage/data/ERR3240184/HG00443.final.cram', 'cram_size': 16714788969, 'crai_size': 1476489, 'cram_md5': '74f61c93f9cc741256a2f3453a3eb353', 'sample_population': 'CHS', 'sample_spechla_population': 'Asian'}
-2026-05-11 13:24:33,313 [INFO] Enriched 602 trios with CRAM URLs
-2026-05-11 13:24:33,314 [INFO] Unique samples: 1793
-2026-05-11 13:24:33,369 [INFO] Wrote families\trios\samples_2504_1kG.tsv (2504 samples)
-2026-05-11 13:24:33,377 [INFO] Wrote families\trios\samples_698_1kG.tsv (698 samples)
-2026-05-11 13:24:33,378 [INFO] Wrote families\trios\family_trios_1kG.json (1,108,833 bytes)
-2026-05-11 13:24:33,378 [INFO]   Trios:        602
-2026-05-11 13:24:33,378 [INFO]   Unique Samples:  1793
-2026-05-11 13:24:33,378 [INFO]   Duos skipped: 10
+2026-05-12 18:06:34,732 [INFO] [download] https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/20130606_g1k_3202_samples_ped_population.txt
+2026-05-12 18:06:35,647 [INFO]            -> families\trios\20130606_g1k_3202_samples_ped_population.txt (97,483 bytes)
+2026-05-12 18:06:35,647 [INFO] [download] https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/1000G_2504_high_coverage.sequence.index
+2026-05-12 18:06:37,134 [INFO]            -> families\trios\1000G_2504_high_coverage.sequence.index (982,480 bytes)
+2026-05-12 18:06:37,135 [INFO] [download] https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/1000G_698_related_high_coverage.sequence.index
+2026-05-12 18:06:38,299 [INFO]            -> families\trios\1000G_698_related_high_coverage.sequence.index (294,388 bytes)
+2026-05-12 18:06:38,304 [INFO] Trios: 602
+2026-05-12 18:06:38,304 [INFO] Duos:  10
+2026-05-12 18:06:38,309 [INFO] 1000G_2504_high_coverage.sequence.index: 2504 rows, creating cram file indexes...
+2026-05-12 19:19:17,354 [INFO]   Done. Running total: 2504
+2026-05-12 19:19:17,356 [INFO] 1000G_698_related_high_coverage.sequence.index: 698 rows, creating cram file indexes...
+2026-05-12 19:39:28,896 [INFO]   Done. Running total: 3202
+2026-05-12 19:39:28,896 [INFO] Combined: 3202 unique samples (expected 3202)
+2026-05-12 19:39:28,896 [INFO] One Sample dict check: {'sample_id': 'HG00443', 'cram_url': 'https://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3240184/HG00443.final.cram', 'cram_aws_url': 'https://1000genomes.s3.us-east-1.amazonaws.com/1000G_2504_high_coverage/data/ERR3240184/HG00443.final.cram', 'cram_size': 16714788969, 'crai_size': 1476489, 'cram_md5': '74f61c93f9cc741256a2f3453a3eb353', 'sample_population': 'CHS', 'sample_spechla_population': 'Asian'}
+2026-05-12 19:39:28,899 [INFO] Enriched 602 trios with CRAM URLs
+2026-05-12 19:39:28,899 [INFO] Unique samples collected from trios: 1793
+2026-05-12 19:39:28,899 [INFO] Unique samples to process: 1793
+2026-05-12 19:39:29,041 [INFO] Wrote families\trios\all_samples_1000genomes.json (1,492,477 bytes, 3202 samples)
+2026-05-12 19:39:29,041 [INFO] Wrote families\trios\family_trios_1000genomes.json (1,108,833 bytes)
+2026-05-12 19:39:29,042 [INFO]   Trios:        602
+2026-05-12 19:39:29,042 [INFO]   Unique Samples:  1793
+2026-05-12 19:39:29,042 [INFO]   Duos skipped: 10
+2026-05-12 19:39:29,042 [INFO] Wrote families\trios\unique_samples_from_trios_1000genomes.tsv (1793 samples)

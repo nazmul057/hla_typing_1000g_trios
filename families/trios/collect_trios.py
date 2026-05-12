@@ -1,4 +1,6 @@
 # Stage 1: Download reference files
+import csv
+import os
 from pathlib import Path
 from datetime import datetime, timezone
 import urllib.request
@@ -7,7 +9,14 @@ import json
 import logging
 import requests
 
-DATA_DIR = Path("families/trios")
+from dotenv import load_dotenv
+
+load_dotenv()
+
+_data_dir_env = os.environ.get("COLLECT_TRIOS_DATA_DIR")
+if not _data_dir_env:
+    raise RuntimeError("COLLECT_TRIOS_DATA_DIR is not set (check your .env file)")
+DATA_DIR = Path(_data_dir_env)
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 logging.basicConfig(
@@ -181,9 +190,6 @@ def main_run():
 
     cram_index = {}
 
-    samples_2504 = []
-    samples_698 = []
-
     for index_file_path in [paths["index_2504"], paths["index_698"]]:
         
         is_related = False
@@ -248,30 +254,21 @@ def main_run():
 
             cram_index[sid] = new_entry
 
-            tup = (sid, cram_aws_url, s_hla_pop)
-            if is_related:
-                samples_698.append(tup)
-            else:
-                samples_2504.append(tup)
-
         log.info(f"  Done. Running total: {len(cram_index)}")
     
     expected = 3202
-    combined = len(samples_2504) + len(samples_698)
-    if combined != len(cram_index) or combined != expected:
-        raise ValueError(
-            f"Sample count mismatch: 2504={len(samples_2504)}, "
-            f"698={len(samples_698)}, sum={combined}, "
-            f"cram_index={len(cram_index)}, expected={expected}"
-        )
-    
+    if len(cram_index) != expected:
+        raise ValueError(f"cram_index has {len(cram_index)} samples, expected {expected}")
+        
     log.info(f"Combined: {len(cram_index)} unique samples (expected 3202)")
     log.info(f"One Sample dict check: {cram_index.get('HG00443')}")
 
     # ===============================================================================================
     # Enrich Family data
 
-    unique_samples = set()
+    unique_samples_in_trios = set()
+
+    samples_to_process = []
 
     for key, trio in trios.items():
         for role, member in trio["members"].items():
@@ -288,10 +285,15 @@ def main_run():
             
             member["member_spechla_population"] = sample_info["sample_spechla_population"]
             member["member_sample_population"] = sample_info["sample_population"]
-            unique_samples.add(sid)
+            
+            if sid not in unique_samples_in_trios:
+                samples_to_process.append((sid, sample_info["cram_aws_url"], sample_info["sample_spechla_population"]))
+
+            unique_samples_in_trios.add(sid)
 
     log.info(f"Enriched {len(trios)} trios with CRAM URLs")
-    log.info(f"Unique samples: {len(unique_samples)}")
+    log.info(f"Unique samples collected from trios: {len(unique_samples_in_trios)}")
+    log.info(f"Unique samples to process: {len(samples_to_process)}")
 
     # ===============================================================================================
     # Write Output file
@@ -300,7 +302,7 @@ def main_run():
         "metadata": {
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "n_trios": len(trios),
-            "n_unique_samples": len(unique_samples),
+            "n_unique_samples": len(unique_samples_in_trios),
             "n_duos_skipped": n_duos,
             "source_files": {
                 "pedigree":   paths["pedigree"].name,
@@ -311,26 +313,28 @@ def main_run():
         "family_trios": trios,
     }
 
-    out_path = DATA_DIR / "family_trios_1kG.json"
+    cram_index_path = DATA_DIR / "all_samples_1000genomes.json"
+    with open(cram_index_path, "w") as f:
+        json.dump(cram_index, f, indent=2)
+
+    out_path = DATA_DIR / "family_trios_1000genomes.json"
     with open(out_path, "w") as f:
         json.dump(output, f, indent=2)
+
+    samples_to_process_path = DATA_DIR / "unique_samples_from_trios_1000genomes.tsv"
+    with open(samples_to_process_path, "w", newline="") as f:
+        writer = csv.writer(f, delimiter="\t", lineterminator="\n")
+        writer.writerows(samples_to_process)
     
-    samples_2504_path = DATA_DIR / "samples_2504_1kG.tsv"
-    with open(samples_2504_path, "w") as f:
-        for sid, url, pop in samples_2504:
-            f.write(f"{sid}\t{url}\t{pop}\n")
-    log.info(f"Wrote {samples_2504_path} ({len(samples_2504)} samples)")
 
-    samples_698_path = DATA_DIR / "samples_698_1kG.tsv"
-    with open(samples_698_path, "w") as f:
-        for sid, url, pop in samples_698:
-            f.write(f"{sid}\t{url}\t{pop}\n")
-    log.info(f"Wrote {samples_698_path} ({len(samples_698)} samples)")
-
+    log.info(f"Wrote {cram_index_path} ({cram_index_path.stat().st_size:,} bytes, {len(cram_index)} samples)")
+    
     log.info(f"Wrote {out_path} ({out_path.stat().st_size:,} bytes)")
     log.info(f"  Trios:        {output['metadata']['n_trios']}")
     log.info(f"  Unique Samples:  {output['metadata']['n_unique_samples']}")
     log.info(f"  Duos skipped: {output['metadata']['n_duos_skipped']}")
+
+    log.info(f"Wrote {samples_to_process_path} ({len(samples_to_process)} samples)")
 
 
 if __name__ == "__main__":
@@ -339,5 +343,4 @@ if __name__ == "__main__":
     except Exception:
         log.exception("Pipeline failed")
         raise
-
 

@@ -1,7 +1,8 @@
 # SpecHLA pipeline image for HLA typing on remote 1kGP CRAMs.
 #
 # Build:
-#   docker build -f toolkit.dockerfile -t hla_toolkit:v1 .
+#   docker build --no-cache -f toolbox.dockerfile -t hla-toolbox:1.0 .
+
 
 FROM debian:bookworm@sha256:8a8cd02c5912770b4980228a54d4aff9e4f986f1eb2525d2d371dec5232cefcc
 

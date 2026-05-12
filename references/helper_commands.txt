@@ -2,15 +2,20 @@
 # check samtools version
 docker run --rm dckr_spechla:v5 conda run -n spechla_env samtools --version
 docker inspect debian:bookworm
-docker build --no-cache -f toolkit.dockerfile -t hla_toolkit:v1 .
+
+docker build --no-cache -f toolbox.dockerfile -t hla-toolbox:1.0 .
+
 docker run --rm hla_toolkit:v1 bash -c "conda run -n spechla_env conda env export --no-builds" > spechla_env.yml
 docker image prune
 
-docker tag hla_toolkit:v1 yourusername/hla_toolkit:v1
-docker push yourusername/hla_toolkit:v1
+docker tag hla-toolbox:1.0 adramlan/hla-toolbox:1.0
+docker push adramlan/hla-toolbox:1.0
 
 digest: 
 v1: digest: sha256:082e0868277efab79d77bf66a2f8fe5c08d842064f16b92a7e74cfdaf66964e3 size: 856
+1.0: digest: sha256:4aeecbca1cf67d91a6054f3fb55c3ced71148b3f0d693d91d4eceb6944e03b45 size: 856
+
+docker pull adramlan/hla-toolbox:1.0
 
 # inspect 
 docker inspect --format="{{index .RepoDigests 0}}" debian:bookworm
@@ -30,3 +35,8 @@ tmux kill-session -t hla_p_r
 # cpu core check (debian)
 nproc
 
+# run pipeline
+
+python run_pipeline.py samples.tsv --start 0 --end 50 --max-workers 4
+python run_pipeline.py samples.tsv --start 50  # 50 through end
+python run_pipeline.py samples.tsv             # all samples
