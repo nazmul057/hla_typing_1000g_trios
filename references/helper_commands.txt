@@ -26,11 +26,11 @@ docker login
 docker push adramlan/spechla_pipeline:v1
 
 # tmux commands
-tmux ls
-tmux new -s hla_p_r
-ctrl + B, D
-tmux attach -t hla_p_r
-tmux kill-session -t hla_p_r
+tmux ls                           # list sessions
+tmux new -s hla_p_r               # create a new session called hla_p_r
+ctrl + B, D                       # exit out of a session
+tmux attach -t hla_p_r            # enter into a session
+tmux kill-session -t hla_p_r      # kill or delete a session
 
 # cpu core check (debian)
 nproc
@@ -40,3 +40,5 @@ nproc
 python run_pipeline.py samples.tsv --start 0 --end 50 --max-workers 4
 python run_pipeline.py samples.tsv --start 50  # 50 through end
 python run_pipeline.py samples.tsv             # all samples
+
+uv run hla_typing/full_data_pipeline/run_pipeline.py families/trios/unique_samples_from_trios_1000genomes.tsv --start 0 --end 4 --max-workers 4
